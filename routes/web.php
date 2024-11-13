@@ -18,6 +18,4 @@ Route::get('/user/{id}/edit-user', [UserController::class, 'editUser'])->name('d
 Route::resource('dashboard', UserController::class)->middleware('auth');
 Route::get('/user', [UserController::class, 'userComun'])->middleware('auth')->name('dashboard.user');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [UserController::class, 'home'])->name('home');

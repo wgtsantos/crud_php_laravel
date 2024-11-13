@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller {
 
+    public function home() {
+        $users = User::all();
+        return view('home', compact('users'));
+    }
+
     public function index() {
         $users = User::all();
         return view('dashboard.index', compact('users'));

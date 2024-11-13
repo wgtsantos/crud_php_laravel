@@ -27,7 +27,7 @@ class AuthController extends Controller {
             }
         }
 
-        return back()->with('error', 'Credenciais inválidas.');
+        return back()->with('error', 'E-mail ou Senha inválidos.');
     }
 
     public function logout(Request $request)
@@ -37,7 +37,7 @@ class AuthController extends Controller {
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('/');
     }
 
 }

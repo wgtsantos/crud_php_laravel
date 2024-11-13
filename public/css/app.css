@@ -1,7 +1,76 @@
-body {
-    background-color: rgb(189, 203, 218);
+/* Container principal do perfil */
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
 }
 
-table {
-    border: 1px solid #000;
+/* Foto de perfil */
+.profile-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 3px solid #6c757d;
+}
+
+/* Placeholder para quando não há foto */
+.profile-placeholder {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #6c757d;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+/* Estilo para o título e subtítulo */
+.profile-container h2 {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.profile-container p {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+/* Lista de informações do usuário */
+.user-details h4 {
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.user-details .list-group-item {
+    border: none;
+    padding: 10px 15px;
+    background-color: #ffffff;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.table img {
+    border: 2px solid #ddd;
+    padding: 2px;
+    background: #fff;
+}
+
+label {
+    font-weight: bolder;
+}
+
+/* Estilo do footer */
+footer {
+    background: #212529;
+    color: #fff;
+    padding: 15px 0;
+}
+
+footer p {
+    margin: 0;
 }
