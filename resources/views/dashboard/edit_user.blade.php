@@ -25,13 +25,19 @@
             <!-- Campo Contato -->
             <div class="mb-3">
                 <label for="contato" class="form-label fw-bold text-dark">Contato:</label>
-                <input type="text" id="contato" name="contato" value="{{ $user->contato }}" class="form-control" required>
+                <input type="text" id="contato" name="contato" value="{{ $user->contato }}" class="form-control">
             </div>
 
             <!-- Campo Nova Senha -->
             <div class="mb-3">
                 <label for="password" class="form-label fw-bold text-dark">Nova Senha (deixe em branco para não alterar):</label>
                 <input type="password" id="password" name="password" class="form-control">
+            </div>
+
+            <!-- Campo Confirmação de Senha -->
+            <div class="mb-3">
+                <label for="password_confirmation" class="form-label">Confirme a Senha:</label>
+                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control">
             </div>
 
             <!-- Campo Foto -->

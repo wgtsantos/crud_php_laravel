@@ -40,6 +40,12 @@
             <input type="password" id="password" name="password" class="form-control" required>
         </div>
 
+        <!-- Campo Confirmação de Senha -->
+        <div class="mb-3">
+            <label for="password_confirmation" class="form-label">Confirme a Senha:</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" required>
+        </div>
+
         <!-- Campo Foto -->
         <div class="mb-3">
             <label for="foto" class="form-label fw-bold text-dark">Foto (opcional):</label>

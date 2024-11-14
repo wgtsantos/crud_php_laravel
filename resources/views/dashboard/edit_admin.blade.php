@@ -5,6 +5,16 @@
 @section('content')
     <h2 class="text-center mb-4">Editar Usuário</h2>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('dashboard.update', $user->id) }}" method="POST" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-sm">
         @csrf
         @method('PUT')
@@ -33,6 +43,12 @@
             <input type="password" id="password" name="password" class="form-control">
         </div>
 
+        <!-- Campo Confirmação de Senha -->
+        <div class="mb-3">
+            <label for="password_confirmation" class="form-label">Confirme a Senha:</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" class="form-control">
+        </div>
+
         <!-- Campo Tipo de Acesso -->
         <div class="mb-3">
             <label for="acesso" class="form-label">Tipo de Acesso:</label>
@@ -53,7 +69,7 @@
             @endif
             <input type="file" id="foto" name="foto" class="form-control">
         </div>
-        
+
         <div class="d-flex justify-content-center gap-3 mt-4">
             <a href="{{ route('dashboard.index') }}" class="btn btn-secondary">Voltar</a>
             <button type="submit" class="btn btn-success">Salvar Alterações</button>

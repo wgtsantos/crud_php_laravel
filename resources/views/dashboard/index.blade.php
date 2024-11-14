@@ -3,6 +3,19 @@
 @section('title', 'Lista de Usuários')
 
 @section('content')
+
+@if (session('error'))
+    <script>
+        alert("{{ session('error') }}");
+    </script>
+@endif
+
+@if (session('success'))
+    <script>
+        alert("{{ session('success') }}");
+    </script>
+@endif
+
 <header class="mb-4">
     <h2 class="text-center">Bem-vindo, Administrador: {{ Auth::user()->nome }}</h2>
     <p class="text-center">Gerencie os usuários aqui.</p>

@@ -14,4 +14,7 @@
         @yield('content')
     </div>
 </body>
+    <!-- Mascara Contato -->
+    <script src="https://cdn.jsdelivr.net/npm/inputmask/dist/inputmask.min.js"></script>
+    <script src="{{ asset('js/mask.js') }}"></script>
 </html>

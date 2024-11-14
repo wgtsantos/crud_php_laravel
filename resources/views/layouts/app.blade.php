@@ -41,6 +41,9 @@
     </footer>
     <!-- Script do Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Mascara Contato -->
+    <script src="https://cdn.jsdelivr.net/npm/inputmask/dist/inputmask.min.js"></script>
+    <script src="{{ asset('js/mask.js') }}"></script>
     <!-- Script personalizado -->
     <script src="{{ asset('js/delete.js') }}"></script>
 </body>

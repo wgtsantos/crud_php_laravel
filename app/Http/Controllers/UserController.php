@@ -36,9 +36,19 @@ class UserController extends Controller {
             'nome' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'contato' => 'required|string|max:15',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|confirmed',
             'acesso' => 'nullable|string|in:user,admin', // Validação opcional para acesso
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ],  [
+            'nome.required' => 'O campo Nome é obrigatório.',
+            'email.required' => 'O campo E-mail é obrigatório.',
+            'email.email' => 'O campo E-mail deve ser um endereço válido.',
+            'email.unique' => 'Este E-mail já está em uso.',
+            'contato.required' => 'O campo Contato é obrigatório.',
+            'password.min' => 'A senha deve ter pelo menos :min caracteres.',
+            'password.confirmed' => 'As senhas informadas não conferem.',
+            'foto.image' => 'O campo Foto deve ser uma imagem válida.',
+            'foto.mimes' => 'A Foto deve ser do tipo: jpeg, png ou jpg.',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -64,7 +74,14 @@ class UserController extends Controller {
     public function editAdmin($id) {
 
         $user = User::findOrFail($id);
-        return view('dashboard.edit_admin', compact('user'));
+
+        // Verificar se o usuário atual é um administrador tentando editar outro administrador
+        if (Auth::user()->acesso === 'admin' && $user->acesso === 'admin' && Auth::user()->id !== (int)$id) {
+            return redirect()->route('dashboard.index')->with('error', 'Você não pode editar outros administradores.');
+        } else {
+
+            return view('dashboard.edit_admin', compact('user'));
+        }
     }
 
     public function editUser($id) {
@@ -73,7 +90,7 @@ class UserController extends Controller {
         // Verifica se o usuário está tentando editar seus próprios dados
         if ($user->id !== Auth::id()) {
             abort(403, 'Acesso negado.');
-    }
+        }
 
         return view('dashboard.edit_user', compact('user'));
     }
@@ -81,57 +98,79 @@ class UserController extends Controller {
     public function update(Request $request, $id) {
         $user = User::findOrFail($id);
 
-        $data = $request->validate([
-            'nome' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'contato' => 'required|string|max:15',
-            'password' => 'nullable|string|min:6',
-            'acesso' => 'nullable|string|in:user,admin', // Validação opcional para acesso
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+        // Verificar se o usuário atual é um administrador tentando editar outro administrador
+        if (Auth::user()->acesso === 'admin' && $user->acesso === 'admin' && Auth::user()->id !== (int)$id) {
+            return redirect()->route('dashboard.index')->with('error', 'Você não pode editar outros administradores.');
+        } else {
 
-        // Atualizar a foto se uma nova for enviada
-        if ($request->hasFile('foto')) {
-            // Apagar a foto antiga, se existir
-            if ($user->foto && Storage::disk('public')->exists($user->foto)) {
-                Storage::disk('public')->delete($user->foto);
+            $data = $request->validate([
+                'nome' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                'contato' => 'required|string|max:15',
+                'password' => 'nullable|string|min:6|confirmed',
+                'acesso' => 'nullable|string|in:user,admin', // Validação opcional para acesso
+                'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            ],  [
+                'nome.required' => 'O campo Nome é obrigatório.',
+                'email.required' => 'O campo E-mail é obrigatório.',
+                'email.email' => 'O campo E-mail deve ser um endereço válido.',
+                'email.unique' => 'Este E-mail já está em uso.',
+                'contato.required' => 'O campo Contato é obrigatório.',
+                'password.min' => 'A senha deve ter pelo menos :min caracteres.',
+                'password.confirmed' => 'As senhas informadas não conferem.',
+                'foto.image' => 'O campo Foto deve ser uma imagem válida.',
+                'foto.mimes' => 'A Foto deve ser do tipo: jpeg, png ou jpg.',
+            ]);
+
+            // Atualizar a foto se uma nova for enviada
+            if ($request->hasFile('foto')) {
+                // Apagar a foto antiga, se existir
+                if ($user->foto && Storage::disk('public')->exists($user->foto)) {
+                    Storage::disk('public')->delete($user->foto);
+                }
+                // Salvar a nova foto
+                $data['foto'] = $request->file('foto')->store('uploads', 'public');
             }
-            // Salvar a nova foto
-            $data['foto'] = $request->file('foto')->store('uploads', 'public');
-        }
 
-        // Atualizar a senha, se fornecida
-        if (!empty($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
-        } else {
-            unset($data['password']);
-        }
+            // Atualizar a senha, se fornecida
+            if (!empty($data['password'])) {
+                $data['password'] = bcrypt($data['password']);
+            } else {
+                unset($data['password']);
+            }
 
-        $user->update($data);
+            $user->update($data);
 
-        // return redirect()->route('dashboard.index');
+            // return redirect()->route('dashboard.index');
 
-        // Diferenciar entre alteração por um administrador ou usuário
-        if (Auth::user()->acesso === 'admin') {
-            // Caso seja um administrador, redirecionar para o índice do dashboard admin
-            return redirect()->route('dashboard.index')->with('success', 'Usuário alterado com sucesso!');
-        } else {
-            // Caso seja um usuário comum, redirecionar para o painel do usuário
-            return redirect()->route('dashboard.user')->with('success', 'Seus dados foram alterados com sucesso!');
+            // Diferenciar entre alteração por um administrador ou usuário
+            if (Auth::user()->acesso === 'admin') {
+                // Caso seja um administrador, redirecionar para o índice do dashboard admin
+                return redirect()->route('dashboard.index')->with('success', 'Usuário alterado com sucesso!');
+            } else {
+                // Caso seja um usuário comum, redirecionar para o painel do usuário
+                return redirect()->route('dashboard.user')->with('success', 'Seus dados foram alterados com sucesso!');
+            }
         }
     }
 
     public function destroy($id) {
         $user = User::findOrFail($id);
 
-        // Apagar a foto do usuário se existir
-        if ($user->foto && Storage::disk('public')->exists($user->foto)) {
-            Storage::disk('public')->delete($user->foto);
+        // Verificar se o usuário atual é um administrador tentando excluir outro administrador
+        if (Auth::user()->acesso === 'admin' && $user->acesso === 'admin' && Auth::user()->id !== (int)$id) {
+            return redirect()->route('dashboard.index')->with('error', 'Você não pode excluir outros administradores.');
+        } else {
+
+            // Apagar a foto do usuário se existir
+            if ($user->foto && Storage::disk('public')->exists($user->foto)) {
+                Storage::disk('public')->delete($user->foto);
+            }
+
+            $user->delete();
+
+            return redirect()->route('dashboard.index');
         }
-
-        $user->delete();
-
-        return redirect()->route('dashboard.index');
     }
 
 }
