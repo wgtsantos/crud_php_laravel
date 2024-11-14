@@ -1,3 +1,48 @@
+# CRUD com Laravel
+
+Este é um sistema de gerenciamento de usuários desenvolvido com **Laravel**, permitindo cadastro, edição, exclusão e exibição de usuários com diferentes níveis de acesso (administrador e usuário).
+
+## 🚀 Funcionalidades
+
+- Gerenciamento completo de usuários.
+- Controle de acesso com autenticação:
+  - **Administrador**: Pode gerenciar todos os usuários (exceto outros administradores).
+  - **Usuário**: Pode visualizar e atualizar seu próprio perfil.
+- Upload e exibição de fotos de perfil.
+- Máscara para o campo de contato.
+- Validação de dados no front-end e back-end.
+
+## 🛠️ Tecnologias
+
+- [Laravel](https://laravel.com/)
+- [Bootstrap](https://getbootstrap.com/) para o front-end.
+- [jQuery Mask Plugin](https://igorescobar.github.io/jQuery-Mask-Plugin/) para formatação de campos.
+- [SweetAlert2](https://sweetalert2.github.io/) (opcional) para mensagens personalizadas.
+
+## ⚙️ Pré-requisitos
+
+- PHP 8.1 ou superior
+- Composer
+- Servidor local como XAMPP, WAMP ou Laragon
+- Banco de dados MySQL
+
+## 🛠️ Instalação
+
+1. Clone o repositório:
+    ```bash
+   git clone https://github.com/seu-usuario/nome-do-repositorio.git
+   cd nome-do-repositorio
+
+2. Instale as dependências:
+    ```bash
+    composer install
+
+### 🔑 Credenciais de Acesso
+- Administrador
+- E-mail: admin@admin.com
+- Senha: admin123
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
